@@ -1,0 +1,23 @@
+{
+  "name": "restaurantsapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile:scss": "node-sass ./scss/main.scss ./css/style.css",
+    "watch:scss": "nodemon -e scss -x \"npm run compile:scss\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nagasaijithin/restaurantsapp.nagasaijithin.git"
+  },
+  "author": "nagasaijithin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nagasaijithin/restaurantsapp.nagasaijithin/issues"
+  },
+  "homepage": "https://github.com/nagasaijithin/restaurantsapp.nagasaijithin#readme",
+  "devDependencies": {
+    "node-sass": "^4.13.0"
+  }
+}
