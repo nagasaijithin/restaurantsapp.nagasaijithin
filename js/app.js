@@ -358,7 +358,7 @@ Renderdata.prototype.getbtnData2 = async function(title) {
 /////////////////////////// button conditionser meathod
 ///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Renderdata.prototype.buttonConditioner = function(title) {
+Renderdata.prototype.buttonConditioner = function(title, btncond) {
   this.btnwapper = document.querySelector(".buttonsWapper");
   this.prebtn = `<div class="pervios-btn btn">
                   <a href="#">Previous Page</a>
@@ -367,24 +367,27 @@ Renderdata.prototype.buttonConditioner = function(title) {
 <div class="next-btn btn">
     <a href="#">Next Page</a>
 </div>`;
+  if (!btncond) {
+    if (this.btnconter < 20) {
+      this.btnwapper.innerHTML = this.nexbtn;
+    } else {
+      this.btnwapper.innerHTML = this.prebtn;
+      this.btnwapper.innerHTML += this.nexbtn;
+    }
 
-  if (this.btnconter < 20) {
-    this.btnwapper.innerHTML = this.nexbtn;
+    if (this.btnconter == 80) {
+      this.btnwapper.innerHTML = "";
+      this.btnwapper.innerHTML = this.prebtn;
+    } else if (this.btnconter == 0) {
+      this.btnwapper.innerHTML = "";
+      this.btnwapper.innerHTML = this.nexbtn;
+    }
+    this.maintitle.textContent === "Near By You"
+      ? this.btnsection1(title)
+      : this.btnsection2(title);
   } else {
-    this.btnwapper.innerHTML = this.prebtn;
-    this.btnwapper.innerHTML += this.nexbtn;
-  }
-
-  if (this.btnconter == 80) {
     this.btnwapper.innerHTML = "";
-    this.btnwapper.innerHTML = this.prebtn;
-  } else if (this.btnconter == 0) {
-    this.btnwapper.innerHTML = "";
-    this.btnwapper.innerHTML = this.nexbtn;
   }
-  this.maintitle.textContent === "Near By You"
-    ? this.btnsection1(title)
-    : this.btnsection2(title);
 };
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////
@@ -619,13 +622,17 @@ Renderdata.prototype.resentalySelectedCard = function(id) {
 Renderdata.prototype.renderingCusiSection = async function(cond, title) {
   let dataForcui = "";
   if (!cond) {
-    // console.log("hi");
     dataForcui = await allCalls.getCuisions().then(data => data);
   } else {
-    dataForcui = await allCalls.getCity(title).then(data => data);
+    let rdata = await allCalls.getCity(title).then(data => data);
+    dataForcui = await allCalls
+      .getCuisions(
+        rdata.location_suggestions[0].longitude,
+        rdata.location_suggestions[0].latitude
+      )
+      .then(data => data);
   }
   let opele2 = " <option  selected>Select Cuisine</option>";
-  console.log(dataForcui);
   dataForcui.cuisines.forEach(each => {
     let { cuisine_id, cuisine_name } = each.cuisine;
     opele2 += `
@@ -647,6 +654,33 @@ Renderdata.prototype.rendingCtrySection = async function() {
   let selectionOne = document.querySelector(".cat-cui-form .select1");
   selectionOne.innerHTML = opele1;
 };
+
+Renderdata.prototype.rederCatrandCuis = async function(
+  cond,
+  title,
+  catry,
+  cuisi
+) {
+  this.sippner.classList.remove("spinner-hidden");
+
+  let dataForuser = "";
+  if (!cond) {
+    dataForuser = await allCalls
+      .usechoesCatryCuisi(catry, cuisi)
+      .then(data => data);
+  } else {
+    let rdata = await allCalls.getCity(title).then(data => data);
+    dataForuser = await allCalls
+      .usechoesCatryCuisi(
+        catry,
+        cuisi,
+        rdata.location_suggestions[0].longitude,
+        rdata.location_suggestions[0].latitude
+      )
+      .then(data => data);
+  }
+  this.currentLocationRes(true, dataForuser, title, true);
+};
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////
 /////////////////////////// restaurant rendaring meathod
@@ -654,7 +688,12 @@ Renderdata.prototype.rendingCtrySection = async function() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // this meathode for rendering data in main content i mean all restaurents
-Renderdata.prototype.currentLocationRes = async function(cond, data, title) {
+Renderdata.prototype.currentLocationRes = async function(
+  cond,
+  data,
+  title,
+  btncond
+) {
   if (!cond) {
     if (allCalls.coordAvailable() < 2) {
       this.resdata = await allCalls.searchRestaurent().then(data => {
@@ -734,7 +773,7 @@ Renderdata.prototype.currentLocationRes = async function(cond, data, title) {
     //any new new likes are dislikes on user choes
     this.likeAreUnlike();
     // this meathod for buttons conditions
-    this.buttonConditioner(title);
+    this.buttonConditioner(title, btncond);
     let cardEvent = document.querySelectorAll(".main-content-card");
     cardEvent.forEach(element => {
       let self = this;
@@ -757,6 +796,17 @@ Renderdata.prototype.currentLocationRes = async function(cond, data, title) {
     formEvent.addEventListener("click", e => {
       let catrsection = formEvent.parentElement.children[0];
       let cuisiSection = formEvent.parentElement.children[1];
+      if (
+        catrsection.options[catrsection.selectedIndex].dataset &&
+        cuisiSection.options[cuisiSection.selectedIndex].dataset
+      ) {
+        this.rederCatrandCuis(
+          cond,
+          title,
+          catrsection.options[catrsection.selectedIndex].dataset.id,
+          cuisiSection.options[cuisiSection.selectedIndex].dataset.id
+        );
+      }
 
       e.preventDefault();
     });

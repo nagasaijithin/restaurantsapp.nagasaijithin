@@ -71,7 +71,19 @@ class Getdata {
       return data;
     }
   }
-
+  async usechoesCatryCuisi(catry, cuisi, lon, lat) {
+    let rdata = await fetch(
+      `https://developers.zomato.com/api/v2.1/search?lat=${
+        lat ? lat : this.coords[0]
+      }&lon=${lon ? lon : this.coords[1]}&cuisines=${cuisi}&category${catry}
+    `,
+      this.getapi
+    );
+    if (rdata.status === 200) {
+      let data = rdata.json();
+      return data;
+    }
+  }
   async getCuisions(lon, lat) {
     let data = await fetch(
       `https://developers.zomato.com/api/v2.1/cuisines?lat=${
