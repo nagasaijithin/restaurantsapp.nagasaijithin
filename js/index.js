@@ -46,16 +46,42 @@ class Getdata {
   coordAvailable() {
     return this.coords.length;
   }
-  async searchRestaurent(lat, lon) {
+  async searchRestaurent(start, lat, lon) {
     let rdata = await fetch(
-      `https://developers.zomato.com/api/v2.1/search?entity_type=zone&count=20&lat=${
-        lat ? lat : this.coords[0]
-      }&lon=${lon ? lon : this.coords[1]}&category=11`,
+      `https://developers.zomato.com/api/v2.1/search?start=${
+        start ? start : 0
+      }&entity_type=zone&count=100&lat=${lat ? lat : this.coords[0]}&lon=${
+        lon ? lon : this.coords[1]
+      }&category=11&sort=rating`,
       this.getapi
     );
     if (rdata.status === 200) {
       let data = rdata.json();
       return data;
+    }
+  }
+
+  async getRestaurent(id) {
+    let rdata = await fetch(
+      `https://developers.zomato.com/api/v2.1/restaurant?res_id=${id}`,
+      this.getapi
+    );
+    if (rdata.status === 200) {
+      let data = rdata.json();
+      return data;
+    }
+  }
+
+  async getCuisions(lon, lat) {
+    let data = await fetch(
+      `https://developers.zomato.com/api/v2.1/cuisines?lat=${
+        lat ? lat : this.coords[0]
+      }&lon=${lon ? lon : this.coords[1]}`,
+      this.getapi
+    );
+    if (data.status === 200) {
+      let rdata = data.json();
+      return rdata;
     }
   }
   async getCatogires() {
