@@ -13,12 +13,18 @@ html {
   -webkit-scroll-behavior: smooth;
   -moz-scroll-behavior: smooth;
   -ms-scroll-behavior: smooth; }
+  @media (max-width: 1024px) {
+    html {
+      font-size: 58.5%; } }
+  @media (max-width: 768px) {
+    html {
+      font-size: 47.5%; } }
 
 body {
   background-color: #fff6f6;
   font-family: "Roboto", sans-serif; }
   body nav {
-    height: 10rem;
+    padding: 1rem;
     display: flex;
     justify-content: space-evenly;
     align-items: baseline; }
@@ -34,6 +40,9 @@ body {
       flex-basis: 49%; }
       body nav form .input-wapper {
         padding: 3rem; }
+        @media (max-width: 425px) {
+          body nav form .input-wapper {
+            padding: 1rem 0rem; } }
         body nav form .input-wapper-center {
           background-color: #dbd9d9;
           display: flex;
@@ -116,15 +125,21 @@ body {
   z-index: -1; }
 
 .main-content {
-  margin: 2rem auto 0;
   padding: 5rem; }
   .main-content .buttonsWapper {
     display: flex;
     justify-content: space-between;
     margin: 5rem; }
+    @media (max-width: 425px) {
+      .main-content .buttonsWapper {
+        margin: 4rem 2rem; } }
     .main-content .buttonsWapper .pervios-btn,
     .main-content .buttonsWapper .next-btn {
       margin: 2rem; }
+      @media (max-width: 425px) {
+        .main-content .buttonsWapper .pervios-btn,
+        .main-content .buttonsWapper .next-btn {
+          margin: 1rem; } }
       .main-content .buttonsWapper .pervios-btn a,
       .main-content .buttonsWapper .next-btn a {
         padding: 2rem 3rem;
@@ -133,6 +148,11 @@ body {
         font-size: 1.3rem;
         text-decoration: none;
         color: black; }
+        @media (max-width: 425px) {
+          .main-content .buttonsWapper .pervios-btn a,
+          .main-content .buttonsWapper .next-btn a {
+            padding: 1.5rem 2rem;
+            font-size: 1.2rem; } }
   .main-content-heading {
     font-size: 3rem;
     margin: 1rem; }
@@ -299,9 +319,11 @@ body {
       .res-popup-continer .res-popup-continer-ditals .res-popup-continer-ditals-list2 ul {
         position: relative;
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        list-style-type: none; }
         .res-popup-continer .res-popup-continer-ditals .res-popup-continer-ditals-list2 ul .users-list {
           display: flex;
+          list-style-type: none;
           padding: 2rem;
           box-shadow: 0.8rem 0.8rem 1rem rgba(0, 0, 0, 0.2);
           margin: 1rem;
@@ -388,22 +410,25 @@ body {
   z-index: -1; }
 
 .cat-cui {
-  height: 17rem;
-  margin: 2rem;
-  padding: 5rem; }
+  margin: 2rem; }
   .cat-cui h2 {
     padding: 1rem 6rem;
     font-size: 1.9rem; }
+    @media (max-width: 425px) {
+      .cat-cui h2 {
+        padding: 1rem 4rem;
+        font-size: 1.6rem; } }
   .cat-cui .cat-cui-form {
     width: 100%;
     height: 100%;
-    margin: 2rem;
     justify-content: space-evenly;
     display: flex;
     align-items: center; }
     .cat-cui .cat-cui-form select {
-      height: 65%;
-      width: 15%;
+      width: 25%;
+      width: 25%;
+      padding: 1.2rem;
+      font-size: 1.3rem;
       border: 1px solid black;
       text-align: center;
       border-radius: 10rem;

@@ -3,6 +3,8 @@ let allCalls = new Getdata();
 /// this is renderdata contructor
 function Renderdata() {
   this.resdata;
+  this.contion;
+  this.condtitle;
   this.prebtn;
   this.btnwapper;
   this.nexbtn;
@@ -132,6 +134,8 @@ Renderdata.prototype.searchRes = async function(data) {
     this.cards.innerHTML = "";
     this.currentLocationRes(true, allres, data);
   }
+  this.contion = true;
+  this.condtitle = data;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,7 +143,6 @@ Renderdata.prototype.searchRes = async function(data) {
 /////////////////////////// ending of searching restaurents meathod
 ///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////
 /////////////////////////// priliked likes reanding in cards
@@ -406,20 +409,19 @@ Renderdata.prototype.renderOnereastaurent = async function(id) {
   resshowerContiner.classList.toggle("respopup-continer-hidden");
   let html = "";
 
-  if (data) {
-    let star = "";
-    for (
-      let i = 1;
-      i <= Math.round(parseInt(data.user_rating.aggregate_rating));
-      i++
-    ) {
-      star += '<i class="fas fa-star"></i>';
-    }
-    let users = "";
+  let star = "";
+  for (
+    let i = 1;
+    i <= Math.round(parseInt(data.user_rating.aggregate_rating));
+    i++
+  ) {
+    star += '<i class="fas fa-star"></i>';
+  }
+  let users = "";
 
-    if (data.photos && data.photos.length >= 1) {
-      data.photos.forEach((element, i) => {
-        users += `
+  if (data.photos && data.photos.length >= 1) {
+    data.photos.forEach((element, i) => {
+      users += `
       <li class="users-list user-list${i}">
       <span class="user-img">
         <img src="${element.photo.user.profile_image}" alt="">
@@ -436,27 +438,27 @@ Renderdata.prototype.renderOnereastaurent = async function(id) {
             `
         };
         <h3><span>${element.photo.user.foodie_level_num}</span>${
-          element.photo.user.foodie_level
-        }</h3>
+        element.photo.user.foodie_level
+      }</h3>
 
       </span>
     </li>
       `;
-      });
-    }
+    });
+  }
 
-    let sliedimgs = "";
-    if (data.photos && data.photos.length >= 1) {
-      data.photos.forEach((element, i) => {
-        sliedimgs += `
+  let sliedimgs = "";
+  if (data.photos && data.photos.length >= 1) {
+    data.photos.forEach((element, i) => {
+      sliedimgs += `
     <img src="${
       element.photo.thumb_url ? element.photo.thumb_url : "./img/03.jpg"
     }" alt="">
     `;
-      });
-    }
+    });
+  }
 
-    html += `
+  html += `
 <div class="closer"><i class="fas fa-times"></i></div>
         <div class="res-popup-continer-wapper">
                     <!-- img continer -->
@@ -521,61 +523,59 @@ Renderdata.prototype.renderOnereastaurent = async function(id) {
           </div>
         </div>
   `;
-    resshowerContiner.innerHTML = html;
-    this.sippner.classList.add("spinner-hidden");
-    this.sliderindex = 0;
-    var sliderItareter;
-    var sliderImgs = resshowerContiner.querySelectorAll(
-      ".res-popup-continer-all-imgs-img-wapper .slide-img-wapper-to-flex img"
-    );
-    if (data.photos) {
-      if (data.photos.length > 1) {
-        sliderItareter = setInterval(() => {
-          if (data.photos.length - 1 > this.sliderindex) {
-            sliderImgs[this.sliderindex].style.transition = "all 0.5s ease-in";
-            sliderImgs[this.sliderindex].style.width = "0%";
-            this.sliderindex++;
-          } else {
-            this.sliderindex = 0;
-            sliderImgs.forEach(each => {
-              each.style.transition = "all 0.01s";
-              each.style.width = "7%";
-            });
-          }
-        }, 4000);
-      }
-    }
-
-    let slidedcresser = resshowerContiner.querySelector(".arror1");
-    let slidedincresser = resshowerContiner.querySelector(".arror2");
-    slidedcresser.addEventListener("click", () => {
-      if (data.photos) {
-        if (this.sliderindex > 0) {
-          clearInterval(sliderItareter);
-          sliderImgs[this.sliderindex - 1].style.transition =
-            "all 0.5s ease-in";
-          sliderImgs[this.sliderindex - 1].style.width = "7%";
-          this.sliderindex -= 1;
-        }
-      }
-    });
-    slidedincresser.addEventListener("click", () => {
-      if (data.photos) {
-        if (this.sliderindex < data.photos.length - 1) {
-          clearInterval(sliderItareter);
+  resshowerContiner.innerHTML = html;
+  this.sippner.classList.add("spinner-hidden");
+  this.sliderindex = 0;
+  var sliderItareter;
+  var sliderImgs = resshowerContiner.querySelectorAll(
+    ".res-popup-continer-all-imgs-img-wapper .slide-img-wapper-to-flex img"
+  );
+  if (data.photos) {
+    if (data.photos.length > 1) {
+      sliderItareter = setInterval(() => {
+        if (data.photos.length - 1 > this.sliderindex) {
           sliderImgs[this.sliderindex].style.transition = "all 0.5s ease-in";
           sliderImgs[this.sliderindex].style.width = "0%";
-          this.sliderindex += 1;
+          this.sliderindex++;
+        } else {
+          this.sliderindex = 0;
+          sliderImgs.forEach(each => {
+            each.style.transition = "all 0.01s";
+            each.style.width = "7%";
+          });
         }
-      }
-    });
-    let colser = resshowerContiner.querySelector(".closer");
-    colser.addEventListener("click", e => {
-      this.sliderindex = 0;
-      clearInterval(sliderItareter);
-      resshowerContiner.classList.toggle("respopup-continer-hidden");
-    });
+      }, 4000);
+    }
   }
+
+  let slidedcresser = resshowerContiner.querySelector(".arror1");
+  let slidedincresser = resshowerContiner.querySelector(".arror2");
+  slidedcresser.addEventListener("click", () => {
+    if (data.photos) {
+      if (this.sliderindex > 0) {
+        clearInterval(sliderItareter);
+        sliderImgs[this.sliderindex - 1].style.transition = "all 0.5s ease-in";
+        sliderImgs[this.sliderindex - 1].style.width = "7%";
+        this.sliderindex -= 1;
+      }
+    }
+  });
+  slidedincresser.addEventListener("click", () => {
+    if (data.photos) {
+      if (this.sliderindex < data.photos.length - 1) {
+        clearInterval(sliderItareter);
+        sliderImgs[this.sliderindex].style.transition = "all 0.5s ease-in";
+        sliderImgs[this.sliderindex].style.width = "0%";
+        this.sliderindex += 1;
+      }
+    }
+  });
+  let colser = resshowerContiner.querySelector(".closer");
+  colser.addEventListener("click", e => {
+    this.sliderindex = 0;
+    clearInterval(sliderItareter);
+    resshowerContiner.classList.toggle("respopup-continer-hidden");
+  });
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -625,51 +625,54 @@ Renderdata.prototype.renderingCusiSection = async function(cond, title) {
     dataForcui = await allCalls.getCuisions().then(data => data);
   } else {
     let rdata = await allCalls.getCity(title).then(data => data);
-    dataForcui = await allCalls
-      .getCuisions(
-        rdata.location_suggestions[0].longitude,
-        rdata.location_suggestions[0].latitude
-      )
-      .then(data => data);
+    if (rdata) {
+      dataForcui = await allCalls
+        .getCuisions(
+          rdata.location_suggestions[0].longitude,
+          rdata.location_suggestions[0].latitude
+        )
+        .then(data => data);
+    }
   }
   let opele2 = " <option  selected>Select Cuisine</option>";
-  dataForcui.cuisines.forEach(each => {
-    let { cuisine_id, cuisine_name } = each.cuisine;
-    opele2 += `
-    <option data-id="${cuisine_id}">${cuisine_name}</option>
-    `;
-  });
+  if (dataForcui) {
+    dataForcui.cuisines.forEach(each => {
+      let { cuisine_id, cuisine_name } = each.cuisine;
+      opele2 += `
+      <option data-id="${cuisine_id}">${cuisine_name}</option>
+      `;
+    });
+  }
+
   let selectionTwo = document.querySelector(".cat-cui-form .select2");
   selectionTwo.innerHTML = opele2;
 };
 Renderdata.prototype.rendingCtrySection = async function() {
   let dataForcat = await allCalls.getCatogires().then(data => data);
   let opele1 = " <option selected>Select Category</option>";
-  dataForcat.categories.forEach(each => {
-    let { id, name } = each.categories;
-    opele1 += `
-    <option data-id="${id}">${name}</option>
-    `;
-  });
+  if (dataForcat) {
+    dataForcat.categories.forEach(each => {
+      let { id, name } = each.categories;
+      opele1 += `
+      <option data-id="${id}">${name}</option>
+      `;
+    });
+  }
+
   let selectionOne = document.querySelector(".cat-cui-form .select1");
   selectionOne.innerHTML = opele1;
 };
 
-Renderdata.prototype.rederCatrandCuis = async function(
-  cond,
-  title,
-  catry,
-  cuisi
-) {
+Renderdata.prototype.rederCatrandCuis = async function(catry, cuisi) {
   this.sippner.classList.remove("spinner-hidden");
 
   let dataForuser = "";
-  if (!cond) {
+  if (!this.contion) {
     dataForuser = await allCalls
       .usechoesCatryCuisi(catry, cuisi)
       .then(data => data);
   } else {
-    let rdata = await allCalls.getCity(title).then(data => data);
+    let rdata = await allCalls.getCity(this.condtitle).then(data => data);
     dataForuser = await allCalls
       .usechoesCatryCuisi(
         catry,
@@ -679,7 +682,7 @@ Renderdata.prototype.rederCatrandCuis = async function(
       )
       .then(data => data);
   }
-  this.currentLocationRes(true, dataForuser, title, true);
+  this.currentLocationRes(true, dataForuser, " ", true);
 };
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////
@@ -764,53 +767,60 @@ Renderdata.prototype.currentLocationRes = async function(
     <div class="main-content-card-wapper"></div>
     </div>`;
     });
-
-    this.cards.innerHTML = "";
-    this.cards.innerHTML = html;
-
-    // every time we render any elements it see this any one restaurents like's
-    this.prilikeres();
-    //any new new likes are dislikes on user choes
-    this.likeAreUnlike();
-    // this meathod for buttons conditions
-    this.buttonConditioner(title, btncond);
-    let cardEvent = document.querySelectorAll(".main-content-card");
-    cardEvent.forEach(element => {
-      let self = this;
-      element.addEventListener("click", function(e) {
-        if (
-          e.target.classList[0] !== "far" &&
-          e.target.classList[0] !== "love-it"
-        ) {
-          self.sippner.classList.remove("spinner-hidden");
-          self.renderOnereastaurent(this.dataset.resid);
-          self.selectedCardStyleing(this.dataset.resid);
-        }
-      });
-    });
-    this.resentalySelectedCard();
-    this.rendingCtrySection();
-    this.renderingCusiSection(cond, title);
-
-    let formEvent = document.querySelector(".cat-cui-form a");
-    formEvent.addEventListener("click", e => {
-      let catrsection = formEvent.parentElement.children[0];
-      let cuisiSection = formEvent.parentElement.children[1];
-      if (
-        catrsection.options[catrsection.selectedIndex].dataset &&
-        cuisiSection.options[cuisiSection.selectedIndex].dataset
-      ) {
-        this.rederCatrandCuis(
-          cond,
-          title,
-          catrsection.options[catrsection.selectedIndex].dataset.id,
-          cuisiSection.options[cuisiSection.selectedIndex].dataset.id
-        );
-      }
-
-      e.preventDefault();
-    });
   }
+
+  this.cards.innerHTML = "";
+  this.cards.innerHTML = html;
+
+  // every time we render any elements it see this any one restaurents like's
+  this.prilikeres();
+  //any new new likes are dislikes on user choes
+  this.likeAreUnlike();
+  // this meathod for buttons conditions
+  this.buttonConditioner(title, btncond);
+  let cardEvent = document.querySelectorAll(".main-content-card");
+  cardEvent.forEach(element => {
+    let self = this;
+    element.addEventListener("click", function(e) {
+      if (
+        e.target.classList[0] !== "far" &&
+        e.target.classList[0] !== "love-it"
+      ) {
+        self.sippner.classList.remove("spinner-hidden");
+        self.renderOnereastaurent(this.dataset.resid);
+        self.selectedCardStyleing(this.dataset.resid);
+      }
+    });
+  });
+  this.resentalySelectedCard();
+  this.rendingCtrySection();
+  this.renderingCusiSection(cond, title);
+
+  let formEventa = document.querySelector(".cat-cui-form a");
+  formEventa.addEventListener("click", e => {
+    if (
+      e.target.parentElement.children[0].options[
+        e.target.parentElement.children[0].selectedIndex
+      ].dataset.id &&
+      e.target.parentElement.children[1].options[
+        e.target.parentElement.children[1].selectedIndex
+      ].dataset.id
+    ) {
+      this.rederCatrandCuis(
+        e.target.parentElement.children[0].options[
+          e.target.parentElement.children[0].selectedIndex
+        ].dataset.id,
+        e.target.parentElement.children[1].options[
+          e.target.parentElement.children[1].selectedIndex
+        ].dataset.id
+      );
+
+      e.target.parentElement.children[0].selectedIndex = 0;
+      e.target.parentElement.children[1].selectedIndex = 0;
+    }
+
+    e.preventDefault();
+  });
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

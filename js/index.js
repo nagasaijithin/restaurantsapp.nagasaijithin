@@ -13,7 +13,8 @@ function GetLocation(options) {
 class Getdata {
   constructor() {
     this.coords = [];
-    this.apikey = "360e6f09f917313221c6764c7d81f441";
+    // this.apikey = "360e6f09f917313221c6764c7d81f441";
+    this.apikey = "f6048644fb6169d897aa3cb4c43b4bd5";
     this.getapi = {
       method: "GET",
       headers: {
