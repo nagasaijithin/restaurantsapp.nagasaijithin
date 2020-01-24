@@ -432,8 +432,8 @@ body {
     justify-content: space-around; }
     @media (max-width: 425px) {
       .remove-like-pop .remove-like-pop-continer {
-        height: 17rem;
-        width: 35rem; } }
+        height: 18rem;
+        width: 41rem; } }
     .remove-like-pop .remove-like-pop-continer .buttons-continer-of-unlike-res {
       display: flex;
       justify-content: flex-end; }
