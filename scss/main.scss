@@ -311,33 +311,6 @@ body {
       }
     }
   }
-  .spinnerWapper {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    background-color: white;
-    z-index: 40;
-    .spinner {
-      width: 0%;
-      height: 10%;
-      border: 10px solid #d3d3d3;
-      padding: 3rem;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      border-top: 10px solid #010101b5;
-      border-radius: 50%;
-      z-index: 40;
-      animation: spinner 0.5s infinite linear;
-      backface-visibility: hidden;
-    }
-  }
-  .spinner-hidden {
-    display: none;
-    z-index: -1;
-    position: relative;
-  }
 
   @keyframes spinner {
     0% {
@@ -350,6 +323,33 @@ body {
       transform: translate(-50%, -50%) rotate(360deg);
     }
   }
+}
+.spinnerWapper {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  z-index: 40;
+  .spinner {
+    width: 0%;
+    height: 10%;
+    border: 10px solid #d3d3d3;
+    padding: 3rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-top: 10px solid #010101b5;
+    border-radius: 50%;
+    z-index: 40;
+    animation: spinner 0.5s infinite linear;
+    backface-visibility: hidden;
+  }
+}
+.spinner-hidden {
+  display: none;
+  z-index: -1;
+  position: relative;
 }
 
 .respopup-continer-hidden {
